@@ -1,0 +1,50 @@
+1. CARGA INICIAL
+   El archivo CSV se cargó completo en una tabla de paso (stg_videojuegos),
+   con todas las columnas como texto y sin modificar. Esa tabla se conserva
+   como copia del original.
+
+2. FILAS SIN NOMBRE
+   Se excluyeron 2 filas que no tenían Name ni Genre (plataforma GEN, 1993),
+   porque no se puede saber a qué juego corresponden.
+
+3. YEAR_OF_RELEASE
+   Tenía el texto "N/A" en 269 filas. Se reemplazó por vacío (NULL) y la
+   columna se convirtió a número entero. En dim_tiempo se creó una fila
+   "Desconocido" para esos juegos.
+
+4. USER_SCORE
+   Tenía el texto "tbd" (por determinar) en 2,425 filas. Se reemplazó por
+   vacío (NULL) y la columna se convirtió a número decimal. En total hay
+   9,127 juegos sin User_Score (los "tbd" más los vacíos originales).
+
+5. PUBLISHER
+   El valor "N/A" (54 filas) se reemplazó por "Desconocido".
+
+6. DEVELOPER Y RATING
+   Los valores vacíos (6,623 en Developer y 6,769 en Rating en el archivo
+   original) se reemplazaron por "Desconocido".
+
+7. TIPOS DE DATOS
+   Ventas por región: NUMERIC(6,2). Critic_Score, Critic_Count y User_Count:
+   entero. User_Score: NUMERIC(3,1). Se eliminaron espacios sobrantes al
+   inicio y al final de los textos.
+
+8. DUPLICADO
+   El juego "Madden NFL 13" en PS3 (2012) aparecía dos veces, con ventas de
+   2.56 y 0.01 millones. Se eliminó la fila de ventas menores.
+
+9. GLOBAL_SALES
+   No se guardó en el modelo porque es la suma de las 4 regiones. Se calcula
+   como na_sales + eu_sales + jp_sales + other_sales. El total calculado
+   (8,913.63 millones) difiere ligeramente de la columna original (8,917.87)
+   porque el archivo original redondeó cada región y el total por separado.
+
+10. NULOS CONSERVADOS
+    Critic_Score y Critic_Count (8,580 filas sin dato) y User_Score se dejaron
+    vacíos a propósito: son juegos que Metacritic no calificó. No se
+    inventaron valores.
+
+11. CARGA AL MODELO
+    Se llenaron las dimensiones con los valores distintos de cada atributo
+    (12,795 videojuegos, 31 plataformas, 581 publishers, 40 registros de
+    tiempo) y la tabla de hechos con las claves de cada dimensión y las medidas.

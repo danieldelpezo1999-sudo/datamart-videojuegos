@@ -1,0 +1,42 @@
+1. TARJETA KPI 1
+Pregunta: ¿Cuántas ventas hay por región? (Norteamérica,
+                 Europa, Japón y Otros, en millones de unidades)
+Filtros        : Año desde, Año hasta, Género, Plataforma
+Origen de datos: fact_ventas + dim_videojuego, dim_plataforma, dim_tiempo
+Objeto SQL     : fn_ventas_por_region()
+
+2. TARJETA KPI 2
+Pregunta: ¿Qué score de críticos tienen los juegos que más
+                 venden? (promedio de critic_score ponderado por ventas)
+Filtros        : Año desde, Año hasta, Género, Plataforma
+Origen de datos: fact_ventas + dim_videojuego, dim_plataforma, dim_tiempo
+Objeto SQL     : fn_score_ponderado()
+
+3. TARJETA KPI 3
+Pregunta: ¿Cuánto vende en promedio cada título de un publisher?
+                 (ventas totales / número de lanzamientos)
+Filtros        : Año desde, Año hasta, Género, Plataforma
+                 y mínimo de lanzamientos (p_min_lanzamientos = 50)
+Origen de datos: fact_ventas + dim_publisher, dim_videojuego,
+                 dim_plataforma, dim_tiempo
+Objeto SQL     : fn_promedio_ventas_publisher()
+
+4. GRÁFICO 1 (barras: ventas por género y región)
+Pregunta / KPI : ¿Cómo varían las ventas de los géneros entre
+                 Norteamérica, Europa, Japón y el resto del mundo?
+Filtros        : Año desde, Año hasta, Género, Plataforma
+Origen de datos: fact_ventas + dim_videojuego, dim_plataforma, dim_tiempo
+Objeto SQL     : fn_ventas_genero_region()
+
+5. GRÁFICO 2 (líneas: ventas por año y plataforma)
+Pregunta / KPI : ¿Qué plataformas dominaron las ventas en cada época?
+Filtros        : Año desde, Año hasta, Género, Plataforma
+Origen de datos: fact_ventas + dim_plataforma, dim_tiempo, dim_videojuego
+Objeto SQL     : fn_ventas_anio_plataforma()
+
+6. TABLA DE DETALLE (juegos con más ventas globales)
+Pregunta / KPI : ¿Qué juegos vendieron más?
+Filtros        : Año desde, Año hasta, Género, Plataforma
+                 (se aplican con WHERE sobre la vista)
+Origen de datos: fact_ventas + las 4 dimensiones
+Objeto SQL     : vw_ventas_detalle

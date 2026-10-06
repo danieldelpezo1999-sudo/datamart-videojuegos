@@ -1,0 +1,64 @@
+MODELO DIMENSIONAL
+Dataset: Video Games Sales with Ratings (Kaggle)
+Base de datos: PostgreSQL 17 (Docker) - bi_database
+
+======================================================
+GRANULARIDAD
+======================================================
+Una fila de la tabla de hechos representa un videojuego
+lanzado en una plataforma en un año determinado.
+
+==============================
+=TABLA DE HECHOS: fact_ventas=
+==============================
+id_venta       SERIAL         PK   Número único de cada fila
+id_juego       INT            FK   -> dim_videojuego(id_juego)
+id_plataforma  INT            FK   -> dim_plataforma(id_plataforma)
+id_publisher   INT            FK   -> dim_publisher(id_publisher)
+id_tiempo      INT            FK   -> dim_tiempo(id_tiempo)
+na_sales       NUMERIC(6,2)        Ventas en Norteamérica (millones)
+eu_sales       NUMERIC(6,2)        Ventas en Europa (millones)
+jp_sales       NUMERIC(6,2)        Ventas en Japón (millones)
+other_sales    NUMERIC(6,2)        Ventas en el resto del mundo (millones)
+critic_score   INT                 Puntaje de críticos (0-100)
+critic_count   INT                 Cantidad de críticos
+user_score     NUMERIC(3,1)        Puntaje de usuarios (0-10)
+user_count     INT                 Cantidad de usuarios
+
+=============
+=DIMENSIONES=
+=============
+dim_videojuego
+  id_juego   SERIAL  PK   Número único del juego
+  nombre     TEXT         Nombre del juego
+  genero     TEXT         Género (Action, Sports, Shooter...)
+  developer  TEXT         Estudio desarrollador
+  rating     TEXT         Clasificación por edad (E, T, M...)
+
+dim_plataforma
+  id_plataforma      SERIAL  PK   Número único de la plataforma
+  nombre_plataforma  TEXT (único) Wii, PS4, X360...
+
+dim_publisher
+  id_publisher      SERIAL  PK   Número único del publisher
+  nombre_publisher  TEXT (único) Empresa publicadora
+
+dim_tiempo
+  id_tiempo  SERIAL  PK   Número único del registro de tiempo
+  anio       INT (único)  Año de lanzamiento (vacío en la fila "Desconocido")
+  decada     TEXT         Década (1980s, 1990s... o "Desconocido")
+
+============
+=RELACIONES=
+============
+fact_ventas.id_juego       -> dim_videojuego.id_juego
+fact_ventas.id_plataforma  -> dim_plataforma.id_plataforma
+fact_ventas.id_publisher   -> dim_publisher.id_publisher
+fact_ventas.id_tiempo      -> dim_tiempo.id_tiempo
+
+============================
+=MEDIDAS USADAS POR LOS KPI=
+============================
+KPI 1 (ventas por región):          na_sales, eu_sales, jp_sales, other_sales
+KPI 2 (score ponderado por ventas): critic_score y las ventas
+KPI 3 (promedio por título):        las ventas y el conteo de filas

@@ -1,0 +1,16 @@
+¿Cómo voy a almacenar, consultar y presentar la información?
+
+ALMACENAR
+Los datos se guardan en PostgreSQL, en un modelo estrella:
+una tabla de hechos con las ventas por región y los puntajes,
+y cuatro dimensiones conectadas por claves foráneas. Cada fila de la tabla de hechos
+es un videojuego lanzado en una plataforma en un año determinado.
+
+CONSULTAR
+Con una vista y funciones SQL que reciben los mismos
+filtros y calculan los KPI y los
+datos de los gráficos.
+
+PRESENTAR
+En un dashboard con filtros, 3 KPI, 2 gráficos y una tabla de detalle. Cada
+componente lee de un objeto SQL, según la matriz de trazabilidad.
